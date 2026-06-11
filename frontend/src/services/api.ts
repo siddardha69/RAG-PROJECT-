@@ -6,22 +6,24 @@ import type {
   GraphData,
 } from '../types';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
 export const api = {
   // Repositories
   async listRepositories(skip = 0, limit = 20): Promise<{ repositories: Repository[]; total: number }> {
-    const res = await fetch(`/api/repositories?skip=${skip}&limit=${limit}`);
+    const res = await fetch(`${API_BASE}/api/repositories?skip=${skip}&limit=${limit}`);
     if (!res.ok) throw new Error('Failed to fetch repositories');
     return res.json();
   },
 
   async getRepository(id: string): Promise<Repository> {
-    const res = await fetch(`/api/repositories/${id}`);
+    const res = await fetch(`${API_BASE}/api/repositories/${id}`);
     if (!res.ok) throw new Error('Failed to fetch repository details');
     return res.json();
   },
 
   async ingestRepository(githubUrl: string, branch = 'main'): Promise<{ repository_id: string; status: string }> {
-    const res = await fetch('/api/repositories/ingest', {
+    const res = await fetch(`${API_BASE}/api/repositories/ingest`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ github_url: githubUrl, branch }),
@@ -39,7 +41,7 @@ export const api = {
     repositoryId?: string,
     includeRecommendations = true
   ): Promise<QueryResponse> {
-    const res = await fetch('/api/query', {
+    const res = await fetch(`${API_BASE}/api/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -57,21 +59,21 @@ export const api = {
 
   // Timelines
   async getTimeline(artifactId: string): Promise<TimelineResponse> {
-    const res = await fetch(`/api/timeline/${artifactId}`);
+    const res = await fetch(`${API_BASE}/api/timeline/${artifactId}`);
     if (!res.ok) throw new Error('Failed to load decision timeline');
     return res.json();
   },
 
   // Recommendations
   async getRecommendation(artifactId: string): Promise<RecommendationResponse> {
-    const res = await fetch(`/api/recommendations/${artifactId}`);
+    const res = await fetch(`${API_BASE}/api/recommendations/${artifactId}`);
     if (!res.ok) throw new Error('Failed to load risk recommendation');
     return res.json();
   },
 
   // Graph Visualization
   async getGraphData(repositoryName: string): Promise<GraphData> {
-    const res = await fetch(`/api/recommendations/graph?repository_name=${encodeURIComponent(repositoryName)}`);
+    const res = await fetch(`${API_BASE}/api/recommendations/graph?repository_name=${encodeURIComponent(repositoryName)}`);
     if (!res.ok) throw new Error('Failed to load repository graph data');
     return res.json();
   },
