@@ -36,7 +36,10 @@ async def health_check(
 
     # 2. Check Redis
     try:
-        r = aris.from_url(settings.redis_url)
+        redis_url = settings.redis_url
+        if redis_url and "ssl_cert_reqs=CERT_NONE" in redis_url:
+            redis_url = redis_url.replace("ssl_cert_reqs=CERT_NONE", "ssl_cert_reqs=none")
+        r = aris.from_url(redis_url)
         await r.ping()
         await r.close()
         services["redis"] = "ok"
