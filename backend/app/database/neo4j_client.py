@@ -17,6 +17,12 @@ class Neo4jClientManager:
     def get_driver(cls) -> AsyncDriver:
         """Get or initialize the singleton AsyncDriver."""
         if cls._driver is None:
+            logger.info(
+                "Initializing Neo4j driver",
+                uri=settings.neo4j_uri,
+                user=settings.neo4j_user,
+                password_length=len(settings.neo4j_password) if settings.neo4j_password else 0,
+            )
             cls._driver = AsyncGraphDatabase.driver(
                 settings.neo4j_uri,
                 auth=(settings.neo4j_user, settings.neo4j_password),
