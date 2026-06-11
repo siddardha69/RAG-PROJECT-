@@ -14,4 +14,9 @@ RUN python -m spacy download en_core_web_sm
 
 COPY . .
 
+# Fix potential Windows CRLF line ending issues in start.sh and make it executable
+RUN sed -i 's/\r$//' start.sh && chmod +x start.sh
+
 EXPOSE 8000
+
+CMD ["./start.sh"]
