@@ -23,7 +23,7 @@ class Settings(BaseSettings):
     embedding_model: str = "BAAI/bge-small-en-v1.5"
     llm_provider: str = "gemini"
     qdrant_collection_name: str = "artifacts"
-    vector_dim: int = 384
+    vector_dim: int = 768
     retrieval_top_k: int = 10
     graph_expansion_depth: int = 2
     final_top_k: int = 5

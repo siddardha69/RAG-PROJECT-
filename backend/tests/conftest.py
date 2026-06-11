@@ -8,10 +8,10 @@ class MockSentenceTransformer:
         pass
     def encode(self, sentences, *args, **kwargs):
         import numpy as np
-        # Return dummy embeddings of dimension 384
+        # Return dummy embeddings of dimension 768
         if isinstance(sentences, list):
-            return np.zeros((len(sentences), 384))
-        return np.zeros((384,))
+            return np.zeros((len(sentences), 768))
+        return np.zeros((768,))
 
 class MockSpacy:
     def load(self, *args, **kwargs):
