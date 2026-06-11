@@ -17,10 +17,16 @@ class QdrantClientManager:
     def get_client(cls) -> AsyncQdrantClient:
         """Get or initialize singleton AsyncQdrantClient."""
         if cls._instance is None:
-            cls._instance = AsyncQdrantClient(
-                host=settings.qdrant_host,
-                port=settings.qdrant_port,
-            )
+            if settings.qdrant_url:
+                cls._instance = AsyncQdrantClient(
+                    url=settings.qdrant_url,
+                    api_key=settings.qdrant_api_key or None,
+                )
+            else:
+                cls._instance = AsyncQdrantClient(
+                    host=settings.qdrant_host,
+                    port=settings.qdrant_port,
+                )
         return cls._instance
 
     @classmethod

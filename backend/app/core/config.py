@@ -1,4 +1,5 @@
 from functools import lru_cache
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,8 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     qdrant_host: str = "localhost"
     qdrant_port: int = 6333
+    qdrant_url: Optional[str] = None
+    qdrant_api_key: Optional[str] = None
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
     neo4j_password: str = "neo4j_secret"
