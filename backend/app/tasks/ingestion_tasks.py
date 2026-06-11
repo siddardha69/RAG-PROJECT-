@@ -30,10 +30,14 @@ def ingest_repository_task(self, github_url: str, repository_id: str) -> dict:
     async def _run_ingestion():
         settings = get_settings()
         from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+        from app.database.postgres import UniqueNameConnection
         local_engine = create_async_engine(
             settings.database_url,
             echo=False,
             future=True,
+            connect_args={
+                "connection_class": UniqueNameConnection,
+            }
         )
         local_sessionmaker = async_sessionmaker(
             bind=local_engine,

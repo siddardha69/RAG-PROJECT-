@@ -1,9 +1,23 @@
 from typing import AsyncGenerator
+from uuid import uuid4
+import asyncpg
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from app.core.config import get_settings
 
 settings = get_settings()
+
+
+class UniqueNameConnection(asyncpg.Connection):
+    """
+    Custom asyncpg Connection class that appends a unique UUID to every prepared
+    statement name. This prevents prepared statement collisions when connecting
+    through transaction-mode poolers like PgBouncer / Supavisor.
+    """
+
+    def _get_unique_id(self, prefix: str) -> str:
+        return f"__asyncpg_{prefix}_{uuid4().hex}__"
+
 
 # Create async engine
 engine = create_async_engine(
@@ -13,9 +27,8 @@ engine = create_async_engine(
     pool_size=10,
     max_overflow=20,
     connect_args={
-        "statement_cache_size": 0,
-        "prepared_statement_cache_size": 0,
-    }
+        "connection_class": UniqueNameConnection,
+    },
 )
 
 # Async session factory
