@@ -78,9 +78,18 @@ app = FastAPI(
 )
 
 # Configure CORS
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://archaeologai.onrender.com",
+]
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    allowed_origins.append(frontend_url.strip().rstrip("/"))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
