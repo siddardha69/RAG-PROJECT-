@@ -82,6 +82,7 @@ allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://archaeologai.onrender.com",
+    "https://archaeoai.onrender.com",
 ]
 frontend_url = os.getenv("FRONTEND_URL")
 if frontend_url:
