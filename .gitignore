@@ -1,0 +1,40 @@
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node dependencies
+node_modules/
+dist/
+build/
+.svelte-kit/
+.next/
+
+# Local databases data folders (if any)
+postgres_data/
+qdrant_data/
+neo4j_data/
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
