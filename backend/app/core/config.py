@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     qdrant_api_key: Optional[str] = None
     neo4j_uri: str = "bolt://localhost:7687"
     neo4j_user: str = "neo4j"
+    neo4j_username: Optional[str] = None
     neo4j_password: str = "neo4j_secret"
     github_token: str = "your_github_token_here"
     gemini_api_key: str = "your_gemini_key_here"
