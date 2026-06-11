@@ -12,6 +12,10 @@ engine = create_async_engine(
     future=True,
     pool_size=10,
     max_overflow=20,
+    connect_args={
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0,
+    }
 )
 
 # Async session factory
