@@ -17,16 +17,19 @@ class Neo4jClientManager:
     def get_driver(cls) -> AsyncDriver:
         """Get or initialize the singleton AsyncDriver."""
         if cls._driver is None:
-            active_user = settings.neo4j_username or settings.neo4j_user
+            active_uri = settings.neo4j_uri.strip() if settings.neo4j_uri else ""
+            raw_user = settings.neo4j_username or settings.neo4j_user
+            active_user = raw_user.strip() if raw_user else ""
+            active_password = settings.neo4j_password.strip() if settings.neo4j_password else ""
             logger.info(
                 "Initializing Neo4j driver",
-                uri=settings.neo4j_uri,
+                uri=active_uri,
                 user=active_user,
-                password_length=len(settings.neo4j_password) if settings.neo4j_password else 0,
+                password_length=len(active_password),
             )
             cls._driver = AsyncGraphDatabase.driver(
-                settings.neo4j_uri,
-                auth=(active_user, settings.neo4j_password),
+                active_uri,
+                auth=(active_user, active_password),
             )
         return cls._driver
 
@@ -44,9 +47,11 @@ class Neo4jClientManager:
         password: Optional[str] = None,
     ):
         # Allow custom parameters or fall back to settings
-        self.uri = uri or settings.neo4j_uri
-        self.user = user or settings.neo4j_username or settings.neo4j_user
-        self.password = password or settings.neo4j_password
+        self.uri = (uri or settings.neo4j_uri).strip()
+        raw_user = user or settings.neo4j_username or settings.neo4j_user
+        self.user = raw_user.strip() if raw_user else ""
+        raw_password = password or settings.neo4j_password
+        self.password = raw_password.strip() if raw_password else ""
         self.driver = self.get_driver()
 
     @asynccontextmanager
